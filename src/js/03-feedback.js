@@ -1,11 +1,13 @@
 import _throttle from 'lodash.throttle';
-// TODO додати тротл на функцію як в другому завданні
 
 const form = document.querySelector('.feedback-form');
-const input = form.querySelector('input[name="email"]');
-const textarea = form.querySelector('textarea[name="message"]');
+const button = document.querySelector('button[type="submit"]');
 
 const LOCALSTORAGE_KEY = 'feedback-form-state';
+
+if (form.elements.email.value === "" && form.elements.message.value === "") {
+  button.disabled = true;
+} 
 
 form.addEventListener('input', _throttle(onFormInput, 500));
 form.addEventListener('submit', onFormSubmit);
@@ -15,36 +17,38 @@ formFilling();
 function onFormInput(event) {
 
   const formData = {
-    email: input.value,
-    message: textarea.value,
-  };
+    email: form.elements.email.value,
+    message: form.elements.message.value,
+  };   
+  
+  if (form.elements.email.value != "" && form.elements.message.value != "") {
+    button.disabled = false;
+  } else {
+    button.disabled = true;
+  }  
 
   localStorage.setItem(LOCALSTORAGE_KEY, JSON.stringify(formData));
 };
 
 function onFormSubmit(event) {
-  event.preventDefault();
-
-  // const savedFormData = localStorage.getItem(LOCALSTORAGE_KEY);
-  // const parsedFormData = JSON.parse(savedFormData);
-  // ? було так, але мені не подобалось повторення
+  event.preventDefault();  
 
   console.log('Entered Data: ', parseLocalData());
 
   event.currentTarget.reset(); // * очищає поля форми
-  localStorage.removeItem(LOCALSTORAGE_KEY); // * очищає локальне сховище
+  localStorage.removeItem(LOCALSTORAGE_KEY); // * очищає локальне сховище  
+
+  if (form.elements.email.value === "" && form.elements.message.value === "") {
+    button.disabled = true;
+  } 
 };
 
 function formFilling() { // * виймає дані з локального сховища та ставить у форму при оновленні
-  // const savedFormData = localStorage.getItem(LOCALSTORAGE_KEY);
-  // const parsedFormData = JSON.parse(savedFormData);
-  // ? було так, але мені не подобалось повторення
-
   const data = parseLocalData();  
 
   if (data) {             
-    input.value = data.email;
-    textarea.value = data.message;
+    form.elements.email.value = data.email;
+    form.elements.message.value = data.message;
   }
 };
 
