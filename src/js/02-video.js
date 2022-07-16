@@ -12,13 +12,7 @@ function timeUpdate(data) {
 
 const currentTime = localStorage.getItem('videoplayer-current-time');// * виймає зі сховища поточну секунду
 
-player.setCurrentTime(currentTime).then(function(seconds) { // * воно працює
-}).catch(function(error) {
-    switch (error.name) {
-        case 'RangeError':
-            break;
+if (currentTime != 0) {
+    player.setCurrentTime(currentTime);
+};
 
-        default:
-            break;
-    }
-});
