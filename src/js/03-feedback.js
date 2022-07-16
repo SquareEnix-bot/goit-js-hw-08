@@ -61,6 +61,9 @@ function onFormSubmit(event) {
   event.currentTarget.reset(); // * очищає поля форми
   localStorage.removeItem(LOCALSTORAGE_KEY); // * очищає локальне сховище
 
+  formFieldsData.email = "";
+  formFieldsData.message = "";
+
   if (form.elements.email.value === "" && form.elements.message.value === "") {
     button.disabled = true;
   }
